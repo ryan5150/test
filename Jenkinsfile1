@@ -1,4 +1,4 @@
-pipeline {
+pipeline{
   agent any
   enviroment {
     IMAGE_NAME - 'ryan5150/test'
