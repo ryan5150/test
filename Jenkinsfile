@@ -1,19 +1,24 @@
-pipeline {
+pipeline{
     agent any
+    enviroment{
+        view = 'venv'
+    }
     stages {
-        stage('Build') {
+        stage('Checkout Out'){
             steps {
-                echo 'Building the project...'
+                git branch: 'master', url: 'https://github.com/ryan5150/test'
             }
         }
-        stage('Test') {
+        stage('Set up VENV'){
             steps {
-                echo 'Running tests...'
+                bat 'python -m venv %VENV%'
+                bat '%VENV%\\Scripts\\python -m pip install --upgrade pip'
+                bat '%VENV%\\Scripts\\pip install -r requirements.txt'
             }
-        }
-        stage('Deploy') {
+        } 
+        stage('Run the tests'){
             steps {
-                echo 'Deploying application...'
+                bat '%VENV%\\Scripts\\python manage.py test'
             }
         }
     }
