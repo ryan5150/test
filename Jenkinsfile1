@@ -1,33 +1,30 @@
 pipeline {
   agent any
+  enviroment {
+    IMAGE_NAME - 'ryan5150/test'
+  }
   stages{
-    stage('Checkout Code'){
+    stage('Checkout'){
       steps{
-        git 'https://github.com/ryan5150/test'
+        git branch 'master', url: 'https://github.com/ryan5150/test'
       }
     }
-    stage('Build'){
+    stage('Build Docker image'){
       steps{
-        sh 'echo "building the app"'
+        bat "docker build -t %IMAGE_NAME%:latest ."
       }
     }
-    stage('Test'){
+    stage('Push to Dockerhub'){
       steps{
-        sh 'echo "Running tests"'
+        withCredentials{[usernamePassword(credemtoa;sId: 'docker', usernameVariable: 'DOCKER_USER', passwordVariable: 'Docker_PASS)]}
+            bat """
+            echo %DOCKER_PASS% |
+            docker login -u %DOCKER_USER% --password-stdin 
+            docker push %IMAGE_NAME"%:latest
+            docker logout
+            """
+        }
       }
     }
-    stage('Deploy'){
-      steps{
-        sh 'echo "deploying"'
-      }
-    }
-  }
-}
-post{
-  success{
-    bat 'echo "build successful"'
-  }
-  failure{
-    bat 'echo "build failure"'
   }
 }
