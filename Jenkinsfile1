@@ -1,7 +1,7 @@
-pipeline{
-  agent any
-  environment {
-    IMAGE_NAME - 'ryan5150/test'
+pipeline {
+    agent any
+    environment {
+        IMAGE_NAME = 'ryan5150/test'
   }
   stages{
     stage('Checkout'){
